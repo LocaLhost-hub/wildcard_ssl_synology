@@ -1,7 +1,7 @@
 #!/bin/bash
 echo -e "\n🌟 Получение Wildcard SSL через DNS API 🌟\n"
 
-read -p "🌐 Введите ваш домен (без www и *, например, yandex.ru): " DOMAIN
+read -p "🌐 Введите ваш домен (без www и *, например, нфтвуч.ru): " DOMAIN
 read -p "📧 Введите ваш Email (для Let's Encrypt): " EMAIL
 
 echo -e "\n🏢 Выберите вашего DNS-провайдера:"
@@ -19,19 +19,19 @@ case $PROVIDER_CHOICE in
         DNS_PLUGIN="dns_regru"
         read -p "👤 Логин Reg.ru: " REGRU_USERNAME
         read -s -p "🔑 Пароль Reg.ru (ввод скрыт): " REGRU_PASSWORD
-        echo "
-        export REGRU_API_Username="$REGRU_USERNAME"
-        export REGRU_API_Password="$REGRU_PASSWORD"
+        echo ""
+        export REGRU_USERNAME="$REGRU_USERNAME"
+        export REGRU_PASSWORD="$REGRU_PASSWORD"
         ;;
     2)
-        DNS_PLUGIN="dns_timeweb"
-        read -p "🔑 Timeweb API Token (TW_Token): " TW_Token
-        export TW_Token="$TW_Token"
+        DNS_PLUGIN="dns_twc"
+        read -p "🔑 Timeweb Cloud API Token: " TWC_TOKEN
+        export TWC_TOKEN="$TWC_TOKEN"
         ;;
     3)
         DNS_PLUGIN="dns_yandex"
-        read -p "🔑 Yandex PDD Token (YANDEX_Token): " YANDEX_Token
-        export YANDEX_Token="$YANDEX_Token"
+        read -p "🔑 Yandex PDD Token: " PDD_Token
+        export PDD_Token="$PDD_Token"
         ;;
     4)
         DNS_PLUGIN="dns_beget"
@@ -73,7 +73,7 @@ curl -s https://get.acme.sh | sh -s email="$EMAIL" --nocron >/dev/null 2>&1
 
 if [ ! -f "$HOME/.acme.sh/acme.sh" ]; then
     echo "❌ КРИТИЧЕСКАЯ ОШИБКА: Утилита acme.sh не установилась!"
-    echo "Возможно, ваш NAS не может скачать файлы с GitHub (проверьте интернет или DNS)."
+    echo "Возможно, ваш NAS не может скачать файлы с GitHub (проверьте интернет или блокировки)."
     exit 1
 fi
 
@@ -93,7 +93,7 @@ if [ $ISSUE_STATUS -eq 0 ]; then
     ~/.acme.sh/acme.sh --deploy -d "$DOMAIN" -d "*.$DOMAIN" --deploy-hook synology_dsm
     
     if [ $? -eq 0 ]; then
-        echo -e "\n🎉 ГОТОВО! Wildcard сертификат успешно установлен в DSM. Проверяй NAS!"
+        echo -e "\n🎉 ГОТОВО! Wildcard сертификат успешно установлен в DSM!"
     else
         echo -e "\n❌ ОШИБКА: Сертификат выпущен, но не импортирован в систему."
     fi
