@@ -1,7 +1,7 @@
 #!/bin/bash
-echo -e "\n🌟 НАЧИНАЕМ: Получение Wildcard SSL через DNS API 🌟\n"
+echo -e "\n🌟 Получение Wildcard SSL через DNS API 🌟\n"
 
-read -p "🌐 Введите ваш домен (без www и *, например, localhosthub.ru): " DOMAIN
+read -p "🌐 Введите ваш домен (без www и *, например, yandex.ru): " DOMAIN
 read -p "📧 Введите ваш Email (для Let's Encrypt): " EMAIL
 
 echo -e "\n🏢 Выберите вашего DNS-провайдера:"
@@ -19,9 +19,9 @@ case $PROVIDER_CHOICE in
         DNS_PLUGIN="dns_regru"
         read -p "👤 Логин Reg.ru: " REGRU_USERNAME
         read -s -p "🔑 Пароль Reg.ru (ввод скрыт): " REGRU_PASSWORD
-        echo ""
-        export REGRU_USERNAME="$REGRU_USERNAME"
-        export REGRU_PASSWORD="$REGRU_PASSWORD"
+        echo "
+        export REGRU_API_Username="$REGRU_USERNAME"
+        export REGRU_API_Password="$REGRU_PASSWORD"
         ;;
     2)
         DNS_PLUGIN="dns_timeweb"
@@ -68,7 +68,15 @@ esac
 
 echo -e "\n📦 Шаг 1: Установка acme.sh..."
 cd ~
-curl https://get.acme.sh | sh -s email="$EMAIL" >/dev/null 2>&1
+
+curl -s https://get.acme.sh | sh -s email="$EMAIL" --nocron >/dev/null 2>&1
+
+if [ ! -f "$HOME/.acme.sh/acme.sh" ]; then
+    echo "❌ КРИТИЧЕСКАЯ ОШИБКА: Утилита acme.sh не установилась!"
+    echo "Возможно, ваш NAS не может скачать файлы с GitHub (проверьте интернет или DNS)."
+    exit 1
+fi
+
 source ~/.acme.sh/acme.sh.env
 
 echo -e "\n🛑 Шаг 2: Запрашиваем Wildcard-сертификат (*.$DOMAIN и $DOMAIN) через $DNS_PLUGIN..."
