@@ -24,9 +24,9 @@ case $PROVIDER_CHOICE in
         export REGRU_PASSWORD="$REGRU_PASSWORD"
         ;;
     2)
-        DNS_PLUGIN="dns_twc"
-        read -p "🔑 Timeweb Cloud API Token: " TWC_TOKEN
-        export TWC_TOKEN="$TWC_TOKEN"
+        DNS_PLUGIN="dns_timeweb"
+        read -p "🔑 Timeweb Cloud API Token: " TW_Token
+        export TW_Token="$TW_Token"
         ;;
     3)
         DNS_PLUGIN="dns_yandex"
