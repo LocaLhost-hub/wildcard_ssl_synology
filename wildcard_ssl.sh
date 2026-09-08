@@ -1,7 +1,7 @@
 #!/bin/bash
 echo -e "\n🌟 Получение Wildcard SSL через DNS API 🌟\n"
 
-read -p "🌐 Введите ваш домен (без www и *, например, нфтвуч.ru): " DOMAIN
+read -p "🌐 Введите ваш домен (без www и *, например, pornohub.ru): " DOMAIN
 read -p "📧 Введите ваш Email (для Let's Encrypt): " EMAIL
 
 echo -e "\n🏢 Выберите вашего DNS-провайдера:"
@@ -20,8 +20,8 @@ case $PROVIDER_CHOICE in
         read -p "👤 Логин Reg.ru: " REGRU_USERNAME
         read -s -p "🔑 Пароль Reg.ru (ввод скрыт): " REGRU_PASSWORD
         echo ""
-        export REGRU_USERNAME="$REGRU_USERNAME"
-        export REGRU_PASSWORD="$REGRU_PASSWORD"
+        export REGRU_API_Username="$REGRU_USERNAME"
+        export REGRU_API_Password="$REGRU_PASSWORD"
         ;;
     2)
         DNS_PLUGIN="dns_timeweb"
@@ -38,8 +38,8 @@ case $PROVIDER_CHOICE in
         read -p "👤 Логин Beget: " BEGET_LOGIN
         read -s -p "🔑 Пароль Beget (ввод скрыт): " BEGET_PASSWORD
         echo ""
-        export BEGET_LOGIN="$BEGET_LOGIN"
-        export BEGET_PASSWORD="$BEGET_PASSWORD"
+        export Beget_Username="$BEGET_LOGIN"
+        export Beget_Password="$BEGET_PASSWORD""
         ;;
     5)
         DNS_PLUGIN="dns_selectel"
